@@ -1,7 +1,14 @@
 ﻿@page "/"
+@inject NavigationManager NavigationManager
+
+@code {
+    protected override void OnInitialized()
+    {
+
+        NavigationManager.NavigateTo("children", replace: true);
+    }
+}
 
 <PageTitle>Home</PageTitle>
 
-<h1>Hello, world!</h1>
-
-Welcome to your new app.
+<h1>Redirecting...</h1>

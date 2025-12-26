@@ -1,0 +1,195 @@
+﻿using KidsAbroad.Models;
+
+namespace KidsAbroad.Data;
+
+public static class ChildStore
+{
+    // Спільний список для всього додатку
+    private static readonly List<Child> _children = new()
+    {
+         new Child
+        {
+            ChildID = Guid.Parse("9681b2a1-6566-4e3a-84cc-7f43c480c28b"),
+            FullName = "Іван Петренко",
+            BirthDate = new DateOnly(2015, 3, 12),
+            Country = "Німеччина",
+            Guardian = "Олена Петренко",
+            Status = "Під наглядом органів опіки"
+        },
+        new Child
+        {
+            ChildID = Guid.Parse("957d06e5-9785-4d12-a5b8-c67ad5ee6968"),
+            FullName = "Марія Іванчук",
+            BirthDate = new DateOnly(2014, 7, 25),
+            Country = "Польща",
+            Guardian = "Сергій Іванчук",
+            Status = "Сімейне влаштування"
+        },
+        new Child
+        {
+            ChildID = Guid.Parse("41841f69-f3a6-4478-b616-23bca0dbb01d"),
+            FullName = "Андрій Коваленко",
+            BirthDate = new DateOnly(2012, 11, 3),
+            Country = "Чехія",
+            Guardian = "Наталія Коваленко",
+            Status = "Потребує уточнення даних"
+        },
+        new Child
+        {
+            ChildID = Guid.Parse("744b02b2-81fe-4f82-9e4d-127ebf110d36"),
+            FullName = "Олександра Романюк",
+            BirthDate = new DateOnly(2016, 1, 18),
+            Country = "Італія",
+            Guardian = "Ірина Романюк",
+            Status = "Під наглядом соціальних служб"
+        },
+        new Child
+        {
+            ChildID = Guid.Parse("235f0ed7-3703-4b35-a620-41e1495d0986"),
+            FullName = "Дмитро Савченко",
+            BirthDate = new DateOnly(2013, 5, 9),
+            Country = "Іспанія",
+            Guardian = "Олексій Савченко",
+            Status = "Влаштований у прийомну сім'ю"
+        },
+        new Child
+        {
+            ChildID = Guid.Parse("389c06ea-eada-4934-9107-4cb422f58158"),
+            FullName = "Катерина Шевченко",
+            BirthDate = new DateOnly(2017, 9, 2),
+            Country = "Франція",
+            Guardian = "Ганна Шевченко",
+            Status = "Під тимчасовою опікою"
+        },
+        new Child
+        {
+            ChildID = Guid.Parse("e998e1ef-9fc3-4bb6-ab2a-f71df0b3047d"),
+            FullName = "Микита Бондар",
+            BirthDate = new DateOnly(2011, 12, 30),
+            Country = "Нідерланди",
+            Guardian = "Оксана Бондар",
+            Status = "Повернення в Україну планується"
+        },
+        new Child
+        {
+            ChildID = Guid.Parse("01cfba80-f70a-43fa-b89b-ac9d067554b9"),
+            FullName = "Софія Лисенко",
+            BirthDate = new DateOnly(2015, 4, 7),
+            Country = "Німеччина",
+            Guardian = "Ігор Лисенко",
+            Status = "Під наглядом органів опіки"
+        },
+        new Child
+        {
+            ChildID = Guid.Parse("ce73dd3c-b108-4c25-9883-835d30d95254"),
+            FullName = "Богдан Ткаченко",
+            BirthDate = new DateOnly(2010, 10, 15),
+            Country = "Польща",
+            Guardian = "Людмила Ткаченко",
+            Status = "Сімейне влаштування"
+        },
+        new Child
+        {
+            ChildID = Guid.Parse("ce5dd69c-e2ce-4215-a551-e49aeab2adbe"),
+            FullName = "Олена Гриценко",
+            BirthDate = new DateOnly(2013, 2, 21),
+            Country = "Чехія",
+            Guardian = "Роман Гриценко",
+            Status = "Потребує уточнення даних"
+        },
+        new Child
+        {
+            ChildID = Guid.Parse("4cf42519-7f92-4225-8fd4-ec02da5a6fff"),
+            FullName = "Руслан Деркач",
+            BirthDate = new DateOnly(2012, 6, 6),
+            Country = "Італія",
+            Guardian = "Світлана Деркач",
+            Status = "Під наглядом соціальних служб"
+        },
+        new Child
+        {
+            ChildID = Guid.Parse("6d4080c7-26e3-4c22-a135-2c9398131dfd"),
+            FullName = "Вероніка Черненко",
+            BirthDate = new DateOnly(2016, 8, 19),
+            Country = "Іспанія",
+            Guardian = "Віктор Черненко",
+            Status = "Влаштована у прийомну сім'ю"
+        },
+        new Child
+        {
+            ChildID = Guid.Parse("71d1117f-346e-4a09-8d39-3dea5fbdc567"),
+            FullName = "Тарас Клименко",
+            BirthDate = new DateOnly(2014, 1, 9),
+            Country = "Франція",
+            Guardian = "Марія Клименко",
+            Status = "Під тимчасовою опікою"
+        },
+        new Child
+        {
+            ChildID = Guid.Parse("bb0fbb6b-a587-4841-89e2-bf2e0a9b2d12"),
+            FullName = "Лілія Сидоренко",
+            BirthDate = new DateOnly(2011, 3, 27),
+            Country = "Нідерланди",
+            Guardian = "Олег Сидоренко",
+            Status = "Повернення в Україну планується"
+        },
+        new Child
+        {
+            ChildID = Guid.Parse("41d970e9-e2d8-42a8-838a-814b2efb87db"),
+            FullName = "Юрій Павленко",
+            BirthDate = new DateOnly(2013, 7, 14),
+            Country = "Німеччина",
+            Guardian = "Інна Павленко",
+            Status = "Під наглядом органів опіки"
+        },
+        new Child
+        {
+            ChildID = Guid.Parse("bf97ad5a-ddc2-4248-b3a8-4bde634d2869"),
+            FullName = "Ірина Омельченко",
+            BirthDate = new DateOnly(2012, 9, 5),
+            Country = "Польща",
+            Guardian = "Василь Омельченко",
+            Status = "Сімейне влаштування"
+        },
+        new Child
+        {
+            ChildID = Guid.Parse("6cc9d9e1-ba72-453e-952e-9817aeca3cf1"),
+            FullName = "Максим Кравчук",
+            BirthDate = new DateOnly(2015, 12, 1),
+            Country = "Чехія",
+            Guardian = "Галина Кравчук",
+            Status = "Потребує уточнення даних"
+        },
+        new Child
+        {
+            ChildID = Guid.Parse("52237cf2-96fb-4df8-8892-19ca5b5a710c"),
+            FullName = "Оксана Білик",
+            BirthDate = new DateOnly(2010, 4, 11),
+            Country = "Італія",
+            Guardian = "Петро Білик",
+            Status = "Під наглядом соціальних служб"
+        },
+        new Child
+        {
+            ChildID = Guid.Parse("25d40e24-1ed0-4c02-a73d-759654f79fa7"),
+            FullName = "Роман Козак",
+            BirthDate = new DateOnly(2016, 6, 23),
+            Country = "Іспанія",
+            Guardian = "Надія Козак",
+            Status = "Влаштований у прийомну сім'ю"
+        },
+        new Child
+        {
+            ChildID = Guid.Parse("55c16866-6804-41da-b9d4-715ec39d2b39"),
+            FullName = "Аліна Левченко",
+            BirthDate = new DateOnly(2014, 2, 4),
+            Country = "Франція",
+            Guardian = "Юлія Левченко",
+            Status = "Під тимчасовою опікою"
+        }
+    };
+
+    public static IReadOnlyList<Child> GetAll() => _children;
+
+    public static void Add(Child child) => _children.Add(child);
+}

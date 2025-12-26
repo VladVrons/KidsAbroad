@@ -1,0 +1,106 @@
+﻿@namespace KidsAbroad.Components.Pages
+@page "/children/new"
+@attribute [StreamRendering]
+@rendermode InteractiveServer
+
+@using System.Globalization
+@using KidsAbroad.Models
+@using KidsAbroad.Data
+
+<PageTitle>Нова дитина</PageTitle>
+
+<h1>Створення картки нової дитини</h1>
+
+<div class="card mb-4">
+    <div class="card-body">
+        <EditForm Model="@newChild" OnValidSubmit="@SaveChild">
+            <DataAnnotationsValidator />
+            <ValidationSummary />
+
+            <div class="mb-3">
+                <label class="form-label">ПІБ дитини</label>
+                <InputText class="form-control" @bind-Value="newChild.FullName" />
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Дата народження</label>
+                <input class="form-control"
+                       type="date"
+                       value="@birthDateText"
+                       @onchange="OnBirthDateChanged" />
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Країна перебування</label>
+                <InputText class="form-control" @bind-Value="newChild.Country" />
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Опікун</label>
+                <InputText class="form-control" @bind-Value="newChild.Guardian" />
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Статус</label>
+                <InputText class="form-control" @bind-Value="newChild.Status" />
+            </div>
+
+            <button type="submit" class="btn btn-primary me-2">Зберегти</button>
+            <button type="button" class="btn btn-secondary" @onclick="GoBack">
+                Скасувати
+            </button>
+        </EditForm>
+    </div>
+</div>
+
+@code {
+    [Inject] private NavigationManager Navigation { get; set; } = default!;
+
+    private Child newChild = new();
+    private string birthDateText = string.Empty;
+
+    protected override void OnInitialized()
+    {
+        var defaultDate = new DateOnly(2015, 1, 1);
+
+        newChild = new Child
+        {
+            BirthDate = defaultDate,
+            Status = "Потребує уточнення даних"
+        };
+
+        birthDateText = defaultDate.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture);
+    }
+
+    private void OnBirthDateChanged(ChangeEventArgs e)
+    {
+        birthDateText = e.Value?.ToString() ?? string.Empty;
+    }
+
+    private void SaveChild()
+    {
+        if (!DateOnly.TryParseExact(
+                birthDateText,
+                "yyyy-MM-dd",
+                CultureInfo.InvariantCulture,
+                DateTimeStyles.None,
+                out var parsedDate))
+        {
+            parsedDate = new DateOnly(2015, 1, 1);
+        }
+
+        newChild.BirthDate = parsedDate;
+        newChild.ChildID = Guid.NewGuid();
+
+        // 👇 Ось головне — додаємо в спільне сховище
+        ChildStore.Add(newChild);
+
+        // Повертаємось до списку
+        Navigation.NavigateTo("/children");
+    }
+
+    private void GoBack()
+    {
+        Navigation.NavigateTo("/children");
+    }
+}

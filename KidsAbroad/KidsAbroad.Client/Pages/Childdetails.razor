@@ -1,9 +1,10 @@
 ﻿@page "/children/{id:guid}"
 @attribute [StreamRendering]
-@rendermode InteractiveWebAssembly
+@rendermode InteractiveServer
 
 @using System.Globalization
 @using Microsoft.AspNetCore.Components
+@using Microsoft.AspNetCore.Components.Forms
 
 <PageTitle>Картка дитини</PageTitle>
 
@@ -23,23 +24,77 @@ else
 
     <div class="card mb-4">
         <div class="card-body">
-            <h4 class="card-title">@child.FullName</h4>
-            <dl class="row mb-0">
-                <dt class="col-sm-3">ChildID</dt>
-                <dd class="col-sm-9">@child.ChildID</dd>
 
-                <dt class="col-sm-3">Дата народження</dt>
-                <dd class="col-sm-9">@child.BirthDate.ToString("dd.MM.yyyy")</dd>
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h4 class="card-title mb-0">
+                    @(isEditMode ? "Редагування даних дитини" : child.FullName)
+                </h4>
 
-                <dt class="col-sm-3">Країна перебування</dt>
-                <dd class="col-sm-9">@child.Country</dd>
+                @if (!isEditMode)
+                {
+                    <button class="btn btn-outline-primary btn-sm" @onclick="BeginEdit">
+                        Редагувати
+                    </button>
+                }
+            </div>
 
-                <dt class="col-sm-3">Опікун</dt>
-                <dd class="col-sm-9">@child.Guardian</dd>
+            @if (isEditMode)
+            {
+                <EditForm Model="@editModel" OnValidSubmit="@SaveEdit">
+                    <DataAnnotationsValidator />
+                    <ValidationSummary />
 
-                <dt class="col-sm-3">Статус</dt>
-                <dd class="col-sm-9">@child.Status</dd>
-            </dl>
+                    <div class="mb-3">
+                        <label class="form-label">ПІБ дитини</label>
+                        <InputText class="form-control" @bind-Value="editModel.FullName" />
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Дата народження</label>
+                        <InputDate class="form-control"
+                                   @bind-Value="editModel.BirthDate" />
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Країна перебування</label>
+                        <InputText class="form-control" @bind-Value="editModel.Country" />
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Опікун</label>
+                        <InputText class="form-control" @bind-Value="editModel.Guardian" />
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Статус</label>
+                        <InputText class="form-control" @bind-Value="editModel.Status" />
+                    </div>
+
+                    <button type="submit" class="btn btn-primary me-2">Зберегти</button>
+                    <button type="button" class="btn btn-secondary" @onclick="CancelEdit">
+                        Скасувати
+                    </button>
+                </EditForm>
+            }
+            else
+            {
+                <dl class="row mb-0">
+                    <dt class="col-sm-3">ChildID</dt>
+                    <dd class="col-sm-9">@child.ChildID</dd>
+
+                    <dt class="col-sm-3">Дата народження</dt>
+                    <dd class="col-sm-9">@child.BirthDate.ToString("dd.MM.yyyy")</dd>
+
+                    <dt class="col-sm-3">Країна перебування</dt>
+                    <dd class="col-sm-9">@child.Country</dd>
+
+                    <dt class="col-sm-3">Опікун</dt>
+                    <dd class="col-sm-9">@child.Guardian</dd>
+
+                    <dt class="col-sm-3">Статус</dt>
+                    <dd class="col-sm-9">@child.Status</dd>
+                </dl>
+            }
         </div>
     </div>
 
@@ -158,7 +213,11 @@ else
     private Child? child;
     private List<Document> documents = new();
 
-    // Стан модального вікна "Надіслати"
+    // --- Редагування дитини ---
+    private bool isEditMode = false;
+    private Child editModel = new();
+
+    // --- Стан модального вікна "Надіслати" ---
     private bool isSendDialogOpen = false;
     private Document? documentToSend;
     private string recipientName = string.Empty;
@@ -168,7 +227,6 @@ else
     {
         isLoading = true;
 
-        // Імітація асинхронного завантаження
         await Task.Delay(300);
 
         var allChildren = GetTestChildren();
@@ -182,7 +240,47 @@ else
         isLoading = false;
     }
 
-    // КНОПКА "Підписати"
+    // --- Редагування ---
+
+    private void BeginEdit()
+    {
+        if (child is null)
+            return;
+
+        editModel = new Child
+        {
+            ChildID = child.ChildID,
+            FullName = child.FullName,
+            BirthDate = child.BirthDate,
+            Country = child.Country,
+            Guardian = child.Guardian,
+            Status = child.Status
+        };
+
+        isEditMode = true;
+    }
+
+    private void SaveEdit()
+    {
+        if (child is null)
+            return;
+
+        child.FullName = editModel.FullName;
+        child.BirthDate = editModel.BirthDate;
+        child.Country = editModel.Country;
+        child.Guardian = editModel.Guardian;
+        child.Status = editModel.Status;
+
+        isEditMode = false;
+    }
+
+    private void CancelEdit()
+    {
+        isEditMode = false;
+    }
+
+    // --- КНОПКА "Підписати" ---
+
     private void SignDocument(Document doc)
     {
         doc.Status = "Підписано";
@@ -193,7 +291,8 @@ else
         }
     }
 
-    // Відкрити вікно надсилання
+    // --- Надіслати документ ---
+
     private void OpenSendDialog(Document doc)
     {
         documentToSend = doc;
@@ -202,14 +301,12 @@ else
         isSendDialogOpen = true;
     }
 
-    // Закрити вікно без змін
     private void CloseSendDialog()
     {
         isSendDialogOpen = false;
         documentToSend = null;
     }
 
-    // Підтвердження надсилання — змінюємо статус
     private void ConfirmSend()
     {
         if (documentToSend is not null)
