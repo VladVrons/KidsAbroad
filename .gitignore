@@ -54,3 +54,4 @@ TestResult.xml
 nunit-*.xml
 /.vs/KidsAbroad.slnx
 /KidsAbroad/KidsAbroad/wwwroot
+/.vs/ProjectEvaluation
