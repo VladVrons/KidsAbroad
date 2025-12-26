@@ -55,3 +55,4 @@ nunit-*.xml
 /.vs/KidsAbroad.slnx
 /KidsAbroad/KidsAbroad/wwwroot
 /.vs/ProjectEvaluation
+/KidsAbroad/KidsAbroad.Client/wwwroot
